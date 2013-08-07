@@ -36,6 +36,8 @@ var teluAlphabets = make(unicodeSequence, 80)
 var kndaAlphabets = make(unicodeSequence, 80)
 var mlymAlphabets = make(unicodeSequence, 80)
 
+var enUsAlphabets = unicodeSequence{`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`, `i`, `j`, `k`, `l`, `m`, `n`, `o`, `p`, `q`, `r`, `s`, `t`, `u`, `v`, `w`, `x`, `y`, `z`}
+
 // Soundex values for English alphabet series
 var soundexEnglish = unicodeSequence{`0`, `1`, `2`, `3`, `0`, `1`, `2`, `0`, `0`, `2`, `2`, `4`, `5`, `5`, `0`, `1`, `2`, `6`, `2`, `3`, `0`, `1`, `0`, `2`, `0`, `2`}
 
