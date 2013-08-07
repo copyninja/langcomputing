@@ -1,13 +1,10 @@
 package charmap
 
-import "strings"
-
 // Private types for rune and string slices
-type runeSequence []rune
-type stringSequence []string
+type unicodeSequence []string
 
 type sequenceIndex interface {
-	index(char rune) int
+	index(char string) int
 }
 
 // Private map to hold all sequences
@@ -29,27 +26,27 @@ var langBases = map[string]int{
 }
 
 // Slices to hold unicode range for each languagges
-var devaAlphabets = make(runeSequence, 80)
-var bengAlphabets = make(runeSequence, 80)
-var guruAlphabets = make(runeSequence, 80)
-var gujrAlphabets = make(runeSequence, 80)
-var oryaAlphabets = make(runeSequence, 80)
-var tamlAlphabets = make(runeSequence, 80)
-var teluAlphabets = make(runeSequence, 80)
-var kndaAlphabets = make(runeSequence, 80)
-var mlymAlphabets = make(runeSequence, 80)
+var devaAlphabets = make(unicodeSequence, 80)
+var bengAlphabets = make(unicodeSequence, 80)
+var guruAlphabets = make(unicodeSequence, 80)
+var gujrAlphabets = make(unicodeSequence, 80)
+var oryaAlphabets = make(unicodeSequence, 80)
+var tamlAlphabets = make(unicodeSequence, 80)
+var teluAlphabets = make(unicodeSequence, 80)
+var kndaAlphabets = make(unicodeSequence, 80)
+var mlymAlphabets = make(unicodeSequence, 80)
 
 // Soundex values for English alphabet series
-var soundexEnglish = runeSequence{'0', '1', '2', '3', '0', '1', '2', '0', '0', '2', '2', '4', '5', '5', '0', '1', '2', '6', '2', '3', '0', '1', '0', '2', '0', '2'}
+var soundexEnglish = unicodeSequence{`0`, `1`, `2`, `3`, `0`, `1`, `2`, `0`, `0`, `2`, `2`, `4`, `5`, `5`, `0`, `1`, `2`, `6`, `2`, `3`, `0`, `1`, `0`, `2`, `0`, `2`}
 
 // Soundex values for Indian language unicode series.
-var soundexIndic = runeSequence{'0', 'N', '0', '0', 'A', 'A', 'B', 'B', 'C', 'C', 'P', 'Q', '0', 'D', 'D', 'D', 'E', 'E', 'E', 'E', 'F', 'F', 'F', 'F', 'G', 'H', 'H', 'H', 'H', 'G', 'I', 'I', 'I', 'I', 'J', 'K', 'K', 'K', 'K', 'L', 'L', 'M', 'M', 'M', 'M', 'N', 'O', 'P', 'P', 'Q', 'Q', 'Q', 'R', 'S', 'S', 'S', 'T', '0', '0', '0', '0', 'A', 'B', 'B', 'C', 'C', 'P', 'P', 'E', 'D', 'D', 'D', 'D', 'E', 'E', 'E', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'E', '0', '0', '0', '0', '0', '0', '0', '0', 'P', 'Q', 'Q', 'Q', '0', '0', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'J', 'J', 'Q', 'P', 'P', 'F'}
+var soundexIndic = unicodeSequence{`0`, `N`, `0`, `0`, `A`, `A`, `B`, `B`, `C`, `C`, `P`, `Q`, `0`, `D`, `D`, `D`, `E`, `E`, `E`, `E`, `F`, `F`, `F`, `F`, `G`, `H`, `H`, `H`, `H`, `G`, `I`, `I`, `I`, `I`, `J`, `K`, `K`, `K`, `K`, `L`, `L`, `M`, `M`, `M`, `M`, `N`, `O`, `P`, `P`, `Q`, `Q`, `Q`, `R`, `S`, `S`, `S`, `T`, `0`, `0`, `0`, `0`, `A`, `B`, `B`, `C`, `C`, `P`, `P`, `E`, `D`, `D`, `D`, `D`, `E`, `E`, `E`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `E`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `P`, `Q`, `Q`, `Q`, `0`, `0`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `0`, `J`, `J`, `Q`, `P`, `P`, `F`}
 
 // ISO15919 series specific to Indian languages
-var iso15919IndicSeries = stringSequence{`m̐`, `ṁ`, `ḥ`, ``, `a`, `ā`, `i`, `ī`, `u`, `ū`, `ṛ`, `ḷ`, `ê`, `e`, `ē`, `ai`, `ô`, `o`, `ō`, `au`, `ka`, `kha`, `ga`, `gha`, `ṅa`, `ca`, `cha`, `ja`, `jha`, `ña`, `ṭa`, `ṭha`, `ḍa`, `ḍha`, `ṇa`, `ta`, `tha`, `da`, `dha`, `na`, `ṉa`, `pa`, `pha`, `ba`, `bha`, `ma`, `ya`, `ra`, `ṟa`, `la`, `ḷa`, `ḻa`, `va`, `śa`, `ṣa`, `sa`, `ha`, ``, ``, ``, `'`, `ā`, `i`, `ī`, `u`, `ū`, `ṛ`, `ṝ`, `ê`, `e`, `ē`, `ai`, `ô`, `o`, `ō`, `au`, ``, ``, ``, `oṃ`, ``, ``, ``, ``, ``, ``, ``, `qa`, `ḵẖa`, `ġ`, `za`, `ṛa`, `ṛha`, `fa`, `ẏa`, `ṝ`, `ḹ`, `ḷ`, `ḹ`, `.`, `..`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `…`, ``, ``, ``, ``, ``, ``, ``}
+var iso15919IndicSeries = unicodeSequence{`m̐`, `ṁ`, `ḥ`, ``, `a`, `ā`, `i`, `ī`, `u`, `ū`, `ṛ`, `ḷ`, `ê`, `e`, `ē`, `ai`, `ô`, `o`, `ō`, `au`, `ka`, `kha`, `ga`, `gha`, `ṅa`, `ca`, `cha`, `ja`, `jha`, `ña`, `ṭa`, `ṭha`, `ḍa`, `ḍha`, `ṇa`, `ta`, `tha`, `da`, `dha`, `na`, `ṉa`, `pa`, `pha`, `ba`, `bha`, `ma`, `ya`, `ra`, `ṟa`, `la`, `ḷa`, `ḻa`, `va`, `śa`, `ṣa`, `sa`, `ha`, ``, ``, ``, `'`, `ā`, `i`, `ī`, `u`, `ū`, `ṛ`, `ṝ`, `ê`, `e`, `ē`, `ai`, `ô`, `o`, `ō`, `au`, ``, ``, ``, `oṃ`, ``, ``, ``, ``, ``, ``, ``, `qa`, `ḵẖa`, `ġ`, `za`, `ṛa`, `ṛha`, `fa`, `ẏa`, `ṝ`, `ḹ`, `ḷ`, `ḹ`, `.`, `..`, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `…`, ``, ``, ``, ``, ``, ``, ``}
 
 // IPA series specific for Indian languages
-var ipaIndicSeries = stringSequence{`m`, `m`, ``, ``, `ə`, `aː`, `i`, `iː`, `u`, `uː`, `r̩`, `l̩`, `æ`, `e`, `eː`, `ɛː`, `ɔ`, `o`, `oː`, `ow`, `kə`, `kʰə`, `gə`, `gʱə`, `ŋə`, `ʧə`, `ʧʰə`, `ʤə`, `ʤʱə`, `ɲə`, `ʈə`, `ʈʰə`, `ɖə`, `ɖʱə`, `ɳə`, `t̪ə`, `t̪ʰə`, `d̪ə`, `d̪ʱə`, `n̪ə`, `nə`, `pə`, `pʰə`, `bə`, `bʱə`, `mə`, `jə`, `ɾə`, `rə`, `lə`, `ɭə`, `ɻə`, `ʋə`, `ɕə`, `ʂə`, `sə`, `ɦə`, ``, ``, ``, `ഽ`, `aː`, `i`, `iː`, `u`, `uː`, `r̩`, `l̩`, `e`, `eː`, `ɛː`, `ɔ`, `o`, `oː`, `ow`, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, `ow`, ``, ``, ``, ``, ``, ``, ``, ``, `r̩ː`, `l̩ː`, ``, ``, ``, ``, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `൰`, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``}
+var ipaIndicSeries = unicodeSequence{`m`, `m`, ``, ``, `ə`, `aː`, `i`, `iː`, `u`, `uː`, `r̩`, `l̩`, `æ`, `e`, `eː`, `ɛː`, `ɔ`, `o`, `oː`, `ow`, `kə`, `kʰə`, `gə`, `gʱə`, `ŋə`, `ʧə`, `ʧʰə`, `ʤə`, `ʤʱə`, `ɲə`, `ʈə`, `ʈʰə`, `ɖə`, `ɖʱə`, `ɳə`, `t̪ə`, `t̪ʰə`, `d̪ə`, `d̪ʱə`, `n̪ə`, `nə`, `pə`, `pʰə`, `bə`, `bʱə`, `mə`, `jə`, `ɾə`, `rə`, `lə`, `ɭə`, `ɻə`, `ʋə`, `ɕə`, `ʂə`, `sə`, `ɦə`, ``, ``, ``, `ഽ`, `aː`, `i`, `iː`, `u`, `uː`, `r̩`, `l̩`, `e`, `eː`, `ɛː`, `ɔ`, `o`, `oː`, `ow`, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, `ow`, ``, ``, ``, ``, ``, ``, ``, ``, `r̩ː`, `l̩ː`, ``, ``, ``, ``, `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `൰`, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``, ``}
 
 // Map to hold rune sequence of each languages
 var langMap = charMap{
@@ -68,21 +65,21 @@ var langMap = charMap{
 	"ISO15919":   iso15919IndicSeries,
 }
 
-func initializeUnicodeRange(slice runeSequence, begin int) {
+func initializeUnicodeRange(slice unicodeSequence, begin int) {
 	for i := 0; i < len(slice); i++ {
-		slice[i] = rune(begin + i)
+		slice[i] = string(begin+i)
 	}
 }
 
 func init() {
 	for key, value := range langMap {
-		if _, ok := value.(runeSequence); ok {
-			initializeUnicodeRange(value.(runeSequence), langBases[key])
+		if key != "ISO15919" && key != "IPA" {
+			initializeUnicodeRange(value.(unicodeSequence), langBases[key])
 		}
 	}
 }
 
-func (r runeSequence) index(char rune) int {
+func (r unicodeSequence) index(char string) int {
 	for i, value := range r {
 		if value == char {
 			return i
@@ -92,17 +89,8 @@ func (r runeSequence) index(char rune) int {
 	return -1
 }
 
-func (s stringSequence) index(char rune) int {
-	for i, value := range s {
-		if strings.ContainsRune(value, char) {
-			return i
-		}
-	}
 
-	return -1
-}
-
-func LanguageOf(char rune) string {
+func LanguageOf(char string) string {
 	for lang, langRange := range langMap {
 		if langRange.index(char) != -1 {
 			return lang
@@ -112,7 +100,7 @@ func LanguageOf(char rune) string {
 	return "unknown"
 }
 
-func CharCompare(char1, char2 rune) bool {
+func CharCompare(char1, char2 string) bool {
 
 	if char1 == char2 {
 		return true
