@@ -4,7 +4,7 @@ import "testing"
 
 func TestLanguageOf(t *testing.T) {
 
-	inArray := []rune{'ಅ', 'ḥ', 'ɭ', '\u0d0a'}
+	inArray := []string{`ಅ`, `ḥ`, `uː`, `ഊ`}
 	outArray := []string{"kn_IN", "ISO15919", "IPA", "ml_IN"}
 
 	for index, value := range inArray {
@@ -16,11 +16,9 @@ func TestLanguageOf(t *testing.T) {
 }
 
 func TestCharCompare(t *testing.T) {
-	inArray := []rune{'ँ', 'అ'}
-	outArray := []rune{'ಁ', 'അ'}
+	inArray := []string{`ँ`, `అ`, `aː`, `ಆ`}
+	outArray := []string{`ಁ`, `അ`, `ആ`, `ā`}
 
-	// multiByteIn := []string {`aː`, `ಆ` }
-	// multiByteOut := []string {`ആ`, `ā`}
 
 	for index, value := range inArray {
 		if x := CharCompare(value, outArray[index]); !x {
@@ -28,9 +26,4 @@ func TestCharCompare(t *testing.T) {
 		}
 	}
 
-	// for index, value := range multiByteIn {
-	// 	if x := CharCompare(value, multiByteOut[index]); !x {
-	// 		t.Errorf("CharCompare(%v, %v) = %v we need %v", value, multiByteOut[index], x, true)
-	// 	}
-	// }
 }
