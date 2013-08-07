@@ -52,33 +52,32 @@ var ipaIndicSeries = unicodeSequence{`m`, `m`, ``, ``, `ə`, `aː`, `i`, `iː`, 
 
 // Map to hold rune sequence of each languages
 var langMap = charMap{
-	"hi_IN":      devaAlphabets,
-	"bn_IN":      bengAlphabets,
-	"pa_IN":      guruAlphabets,
-	"gu_IN":      gujrAlphabets,
-	"or_IN":      oryaAlphabets,
-	"ta_IN":      tamlAlphabets,
-	"te_IN":      teluAlphabets,
-	"kn_IN":      kndaAlphabets,
-	"ml_IN":      mlymAlphabets,
-	"soundex_en": soundexEnglish,
-	"soundex_in": soundexIndic,
-	"IPA":        ipaIndicSeries,
-	"ISO15919":   iso15919IndicSeries,
+	"hi_IN": devaAlphabets,
+	"bn_IN": bengAlphabets,
+	"pa_IN": guruAlphabets,
+	"gu_IN": gujrAlphabets,
+	"or_IN": oryaAlphabets,
+	"ta_IN": tamlAlphabets,
+	"te_IN": teluAlphabets,
+	"kn_IN": kndaAlphabets,
+	"ml_IN": mlymAlphabets,
 }
 
 func initializeUnicodeRange(slice unicodeSequence, begin int) {
 	for i := 0; i < len(slice); i++ {
-		slice[i] = string(begin+i)
+		slice[i] = string(begin + i)
 	}
 }
 
 func init() {
 	for key, value := range langMap {
-		if key != "ISO15919" && key != "IPA" {
-			initializeUnicodeRange(value.(unicodeSequence), langBases[key])
-		}
+		initializeUnicodeRange(value.(unicodeSequence), langBases[key])
 	}
+
+	langMap["soundex_en"] = soundexEnglish
+	langMap["soundex_in"] = soundexIndic
+	langMap["ISO15919"] = iso15919IndicSeries
+	langMap["IPA"] = ipaIndicSeries
 }
 
 func (r unicodeSequence) index(char string) int {
@@ -90,7 +89,6 @@ func (r unicodeSequence) index(char string) int {
 
 	return -1
 }
-
 
 func LanguageOf(char string) string {
 	for lang, langRange := range langMap {
