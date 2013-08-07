@@ -19,7 +19,6 @@ func TestCharCompare(t *testing.T) {
 	inArray := []string{`ँ`, `అ`, `aː`, `ಆ`}
 	outArray := []string{`ಁ`, `അ`, `ആ`, `ā`}
 
-
 	for index, value := range inArray {
 		if x := CharCompare(value, outArray[index]); !x {
 			t.Errorf("CharCompare(%v, %v) = %v we need %v", value, outArray[index], x, true)
