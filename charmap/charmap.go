@@ -68,14 +68,8 @@ var langMap = charMap{
 	"ISO15919":   iso15919IndicSeries,
 }
 
-// Map to hold ISO and IPA string sequences
-// var iso15919IPACharmap = stringMap{
-// 	"ISO15919": iso15919IndicSeries,
-// 	"IPA":      ipaIndicSeries,
-// }
-
-func initializeUnicodeRange(slice runeSequence, begin, length int) {
-	for i := 0; i < length; i++ {
+func initializeUnicodeRange(slice runeSequence, begin int) {
+	for i := 0; i < len(slice); i++ {
 		slice[i] = rune(begin + i)
 	}
 }
@@ -83,7 +77,7 @@ func initializeUnicodeRange(slice runeSequence, begin, length int) {
 func init() {
 	for key, value := range langMap {
 		if _, ok := value.(runeSequence); ok {
-			initializeUnicodeRange(value.(runeSequence), langBases[key], len(value.(runeSequence)))
+			initializeUnicodeRange(value.(runeSequence), langBases[key])
 		}
 	}
 }
