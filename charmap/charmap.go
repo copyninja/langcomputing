@@ -82,6 +82,7 @@ func init() {
 	langMap["soundex_in"] = soundexIndic
 	langMap["ISO15919"] = iso15919IndicSeries
 	langMap["IPA"] = ipaIndicSeries
+	langMap["en_US"] = enUsAlphabets
 }
 
 func (r unicodeSequence) index(char string) int {
