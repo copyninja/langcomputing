@@ -1,5 +1,9 @@
 package charmap
 
+import (
+	"strings"
+)
+
 // Private types for rune and string slices
 type unicodeSequence []string
 
@@ -114,4 +118,24 @@ func CharCompare(char1, char2 string) bool {
 	}
 
 	return false
+}
+
+func SoundexCode(char string) (string, error) {
+	var lang string
+	char = strings.ToLower(char)
+	if lang = LanguageOf(char); lang != "unknown" {
+		if charIndex := langMap[lang].index(char); charIndex != -1 {
+			var sequence unicodeSequence
+
+			switch lang {
+			case "en_US":
+				sequence = langMap["soundex_en"].(unicodeSequence)
+			default:
+				sequence = langMap["soundex_in"].(unicodeSequence)
+			}
+			return sequence[charIndex], nil
+		}
+		return "0", &UnknownCharError{char, lang, "not found"}
+	}
+	return "0", &UnknownCharError{char, lang, "unknown language"}
 }
