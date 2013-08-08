@@ -26,3 +26,14 @@ func TestCharCompare(t *testing.T) {
 	}
 
 }
+
+func TestSoundexCode(t *testing.T) {
+	inArray := []string{`b`, `t`, "ಇ", "B", "A"}
+	outArray := []string{"1", "3", "B", "1", "0"}
+
+	for index, value := range inArray {
+		if x, err := SoundexCode(value); err != nil && x != outArray[index] {
+			t.Errorf("SoundexCode(%v) = %v was expecting %v", value, x, outArray[index])
+		}
+	}
+}
