@@ -14,6 +14,19 @@ type sequenceIndex interface {
 // Private map to hold all sequences
 type charMap map[string]sequenceIndex
 
+type UnknownCharError struct {
+	char, lang string
+	message    string
+}
+
+func (e *UnknownCharError) Error() string {
+	if len(e.lang) == 0 {
+		return e.char + " : " + e.message
+	}
+
+	return e.char + " " + e.message + " " + e.lang
+}
+
 // Languagewise unicode ranges
 var langBases = map[string]int{
 	"en_US": 0,
