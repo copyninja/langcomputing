@@ -110,7 +110,7 @@ func init() {
 	langMap["en_US"] = enUsAlphabets
 }
 
-func (r unicodeSequence) index(char string) int {
+func (r unicodeSequence) index(char interface{}) int {
 	for i, value := range r {
 		if value == char {
 			return i
@@ -120,7 +120,18 @@ func (r unicodeSequence) index(char string) int {
 	return -1
 }
 
-func LanguageOf(char string) string {
+func (r runeSequence) index(char interface{}) int {
+
+	for i, value := range r {
+		if value == char.(rune) {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func LanguageOf(char interface{}) string {
 	for lang, langRange := range langMap {
 		if langRange.index(char) != -1 {
 			return lang
@@ -130,7 +141,7 @@ func LanguageOf(char string) string {
 	return "unknown"
 }
 
-func CharCompare(char1, char2 string) bool {
+func CharCompare(char1, char2 interface{}) bool {
 
 	if char1 == char2 {
 		return true
@@ -146,22 +157,27 @@ func CharCompare(char1, char2 string) bool {
 	return false
 }
 
-func SoundexCode(char string) (string, error) {
+func SoundexCode(char interface{}) (rune, error) {
 	var lang string
-	char = strings.ToLower(char)
+
+	switch char.(type) {
+	case string:
+		char = strings.ToLower(char.(string))
+	}
+
 	if lang = LanguageOf(char); lang != "unknown" {
 		if charIndex := langMap[lang].index(char); charIndex != -1 {
-			var sequence unicodeSequence
+			var sequence runeSequence
 
 			switch lang {
 			case "en_US":
-				sequence = langMap["soundex_en"].(unicodeSequence)
+				sequence = langMap["soundex_en"].(runeSequence)
 			default:
-				sequence = langMap["soundex_in"].(unicodeSequence)
+				sequence = langMap["soundex_in"].(runeSequence)
 			}
 			return sequence[charIndex], nil
 		}
-		return "0", &UnknownCharError{char, lang, "not found"}
+		return '0', &UnknownCharError{char, lang, "not found"}
 	}
-	return "0", &UnknownCharError{char, lang, "unknown language"}
+	return '0', &UnknownCharError{char, lang, "unknown language"}
 }
