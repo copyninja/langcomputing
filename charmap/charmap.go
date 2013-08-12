@@ -1,30 +1,42 @@
 package charmap
 
 import (
+	"strconv"
 	"strings"
 )
 
 // Private types for rune and string slices
 type unicodeSequence []string
+type runeSequence []rune
 
 type sequenceIndex interface {
-	index(char string) int
+	index(char interface{}) int
 }
 
 // Private map to hold all sequences
 type charMap map[string]sequenceIndex
 
 type UnknownCharError struct {
-	char, lang string
-	message    string
+	char    interface{}
+	lang    string
+	message string
 }
 
 func (e *UnknownCharError) Error() string {
-	if len(e.lang) == 0 {
-		return e.char + " : " + e.message
+	var returnString string
+
+	switch e.char.(type) {
+	case rune:
+		returnString = strconv.QuoteRune(e.char.(rune))
+	case string:
+		returnString = e.char.(string)
 	}
 
-	return e.char + " " + e.message + " " + e.lang
+	if len(e.lang) == 0 {
+		return returnString + " : " + e.message
+	}
+
+	return returnString + " " + e.message + " " + e.lang
 }
 
 // Languagewise unicode ranges

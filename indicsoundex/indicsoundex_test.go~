@@ -1,0 +1,8 @@
+package indicsoundex
+
+import "testing"
+
+func TestCalculate(t *testing.T) {
+	inArray := []string {"vasudeva", "kamath", "ವಾಸುದೇವ", "वासुदॆव"}
+	outArray := []string {"vA2C3D1A", "kA5A3000", ""}
+}

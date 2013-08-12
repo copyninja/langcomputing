@@ -1,0 +1,11 @@
+package indicsoundex
+
+func Calculate(word string, padding int) {
+	var sndx string
+	
+	for _, value  := range word {
+		if d, err := charmap.SoundexCode(string(value)); err == nil {
+			
+		}
+	}
+}
