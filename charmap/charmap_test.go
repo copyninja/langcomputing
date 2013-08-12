@@ -4,8 +4,10 @@ import "testing"
 
 func TestLanguageOf(t *testing.T) {
 
-	inArray := []string{`ಅ`, `ḥ`, `uː`, `ഊ`}
-	outArray := []string{"kn_IN", "ISO15919", "IPA", "ml_IN"}
+	// inArray := []rune{'ಅ', `ḥ`, `uː`, 'ഊ'}
+	inArray := []rune{'ಅ', 'ഊ'}
+	// outArray := []string{"kn_IN", "ISO15919", "IPA", "ml_IN"}
+	outArray := []string{"kn_IN", "ml_IN"}
 
 	for index, value := range inArray {
 		if x, output := LanguageOf(value), outArray[index]; x != output {
@@ -16,8 +18,10 @@ func TestLanguageOf(t *testing.T) {
 }
 
 func TestCharCompare(t *testing.T) {
-	inArray := []string{`ँ`, `అ`, `aː`, `ಆ`}
-	outArray := []string{`ಁ`, `അ`, `ആ`, `ā`}
+	// inArray := []interface{}{'ँ', 'అ', `aː`, 'ಆ'}
+	inArray := []rune{'ँ', 'అ', 'ಆ'}
+	// outArray := []interface{}{'ಁ', 'അ', 'ആ', `ā`}
+	outArray := []rune{'ಁ', 'അ', 'ആ'}
 
 	for index, value := range inArray {
 		if x := CharCompare(value, outArray[index]); !x {
@@ -28,8 +32,8 @@ func TestCharCompare(t *testing.T) {
 }
 
 func TestSoundexCode(t *testing.T) {
-	inArray := []string{`b`, `t`, "ಇ", "B", "A"}
-	outArray := []string{"1", "3", "B", "1", "0"}
+	inArray := []interface{}{'b', 't', 'ಇ', 'B', 'A'}
+	outArray := []interface{}{'1', '3', 'B', '1', '0'}
 
 	for index, value := range inArray {
 		if x, err := SoundexCode(value); err != nil && x != outArray[index] {
