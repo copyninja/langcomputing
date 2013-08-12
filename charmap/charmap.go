@@ -92,15 +92,15 @@ var langMap = charMap{
 	"ml_IN": mlymAlphabets,
 }
 
-func initializeUnicodeRange(slice unicodeSequence, begin int) {
+func initializeUnicodeRange(slice runeSequence, begin int) {
 	for i := 0; i < len(slice); i++ {
-		slice[i] = string(begin + i)
+		slice[i] = rune(begin + i)
 	}
 }
 
 func init() {
 	for key, value := range langMap {
-		initializeUnicodeRange(value.(unicodeSequence), langBases[key])
+		initializeUnicodeRange(value.(runeSequence), langBases[key])
 	}
 
 	langMap["soundex_en"] = soundexEnglish
