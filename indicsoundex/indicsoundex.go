@@ -6,22 +6,9 @@ import (
 	"strings"
 )
 
-func Calculate(word string, padding int) string {
-	unicodeWord := strings.Split(word, "")
-
-	// We need Unicode length of the word not length of UTF-8
-	// encoded Unicode word.
-	// .
-	// Additionally unlike expected word[0] is not a Unicode
-	// letter  instead first byte of UTF-8 encoded Unicode letter
-	// (utf-8 encoded Unicode letter for Indian language is
-	// normally  3 bytes in length). We need to reduce length by 1
-	// to get last index of first Unicode character as strings are
-	// 0 indexed.
-
-	wordLength, firstCharLastIndex := len(unicodeWord), len(unicodeWord[0])-1
-
-	sndx := make([]rune, wordLength)
+func soundex(word string, length int) (string, string) {
+	sndx := make([]rune, 1)
+	var lang string
 
 	// Is this the first char
 	var isFc = true
@@ -37,7 +24,8 @@ func Calculate(word string, padding int) string {
 			// We don't need to calculate Soundex code for
 			// first letter of the word.
 			isFc = false
-			sndx[i] = value
+			sndx = append(sndx[:i], value)
+			lang = charmap.LanguageOf(value)
 			i++
 			continue
 		}
@@ -52,15 +40,38 @@ func Calculate(word string, padding int) string {
 
 			// Ignore consecutive characters
 			if len(sndx) != 0 || d != sndx[len(sndx)-1] {
-				sndx[i] = d
+				sndx = append(sndx[:i], d)
 				i++
 			}
 		}
 	}
 
+	return string(sndx), lang
+}
+
+func Calculate(word string, padding int) string {
+	unicodeWord := strings.Split(word, "")
+
+	// We need Unicode length of the word not length of UTF-8
+	// encoded Unicode word.
+	// .
+	// Additionally unlike expected word[0] is not a Unicode
+	// letter  instead first byte of UTF-8 encoded Unicode letter
+	// (utf-8 encoded Unicode letter for Indian language is
+	// normally  3 bytes in length). We need to reduce length by 1
+	// to get last index of first Unicode character as strings are
+	// 0 indexed.
+
+	wordLength, firstCharLastIndex := len(unicodeWord), len(unicodeWord[0])-1
+	result, lang := soundex(word, wordLength)
+
+	if lang == "en_US" {
+		return result
+	}
+
 	// Convert sndx a rune slice into single string and padd it
 	// with `padding' number of 0
-	result := string(sndx) + strings.Repeat(`0`, padding)
+	result += strings.Repeat(`0`, padding)
 
 	// Return the string slice 0 to padding+firstCharLastIndex
 	return result[0 : padding+firstCharLastIndex]
