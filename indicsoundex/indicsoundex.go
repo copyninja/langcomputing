@@ -6,6 +6,13 @@ import (
 	"strings"
 )
 
+const (
+	SOUNDEX_NO_ENGLISH_COMPARE = -1
+	SOUNDEX_SAME_STRING = 0
+	SOUNDEX_STRINGS_MATCH = iota
+	SOUNDEX_STRING_NOMATCH
+)
+
 func soundex(word string, length int) (string, string) {
 	sndx := make([]rune, 1)
 	var lang string
