@@ -20,10 +20,10 @@ import (
   Return values defined here
 */
 const (
-	SOUNDEX_NO_ENGLISH_COMPARE = -1 // We can't implement English to Indic comparision
-	SOUNDEX_SAME_STRING        = 0  // Input strings are same
-	SOUNDEX_STRINGS_MATCH      = 1  // Input strings sounds alike but of different languages
-	SOUNDEX_STRING_NOMATCH     = 2  // Strings doesn't sound alike
+	SOUNDEX_NO_ENGLISH_COMPARE       = -1 // We can't implement English to Indic comparision
+	SOUNDEX_SAME_STRING              = 0  // Input strings are same
+	SOUNDEX_STRINGS_SOUNDS_ALIKE     = 1  // Input strings sounds alike but of different languages
+	SOUNDEX_STRINGS_SOUNDS_DIFFERENT = 2  // Strings doesn't sound alike
 )
 
 func soundex(word string, length int) (string, string) {
@@ -108,7 +108,7 @@ func Calculate(word string, padding int) string {
 
 /*
   Compare compares word1 and word2 to check if they sounds alike. If
-  they sounds alike SOUNDEX_STRINGS_MATCH is returned. If same string
+  they sounds alike SOUNDEX_STRINGS_SOUNDS_ALIKE is returned. If same string
   is given as input, function simply returns SOUNDEX_SAME_STRING
   without calculating soundex for strings.
 
@@ -116,7 +116,7 @@ func Calculate(word string, padding int) string {
   SOUNDEX_NO_ENGLISH_COMPARE as there is no way to compare an English
   and Indian language string.
 
-  If strings does not match SOUNDEX_STRING_NOMATCH is returned.
+  If strings does not match SOUNDEX_STRINGS_SOUNDS_DIFFERENT is returned.
 */
 func Compare(word1, word2 string) int {
 	// If words are same no need of soundex calculation return
@@ -146,9 +146,9 @@ func Compare(word1, word2 string) int {
 	// Ignoring first letter if rest of string matches then word1 and word2
 	// sounds alike
 	if strings.Join(soundex1[1:], "") == strings.Join(soundex2[1:], "") {
-		return SOUNDEX_STRINGS_MATCH
+		return SOUNDEX_STRINGS_SOUNDS_ALIKE
 	}
 
-	return SOUNDEX_STRING_NOMATCH
+	return SOUNDEX_STRINGS_SOUNDS_DIFFERENT
 
 }

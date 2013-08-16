@@ -19,8 +19,10 @@ func TestCompare(t *testing.T) {
 		"vasudev"}
 	outArray := []string{"kamath", "വാസുദേവ", "వాసుదేవ", "vaasudev",
 		"vasudev"}
-	resultArray := []int{SOUNDEX_STRING_NOMATCH, SOUNDEX_STRINGS_MATCH,
-		SOUNDEX_STRINGS_MATCH, SOUNDEX_STRINGS_MATCH,
+	resultArray := []int{SOUNDEX_STRINGS_SOUNDS_DIFFERENT,
+		SOUNDEX_STRINGS_SOUNDS_ALIKE,
+		SOUNDEX_STRINGS_SOUNDS_ALIKE,
+		SOUNDEX_STRINGS_SOUNDSS_ALIKE,
 		SOUNDEX_SAME_STRING}
 
 	for index, value := range inArray {
