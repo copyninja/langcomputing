@@ -83,3 +83,29 @@ func Calculate(word string, padding int) string {
 	// Return the string slice 0 to padding+firstCharLastIndex
 	return result[0 : padding+firstCharLastIndex]
 }
+
+func Compare(word1, word2 string) int {
+	// If words are same no need of soundex calculation return
+	// matching
+	if word1 == word2 {
+		return SOUNDEX_SAME_STRING
+	}
+
+	lang1 := charmap.LanguageOf(rune(word1[0]))
+	lang2 := charmap.LanguageOf(rune(word2[0]))
+
+	if lang1 == "en_US" && lang2 != "en_US" ||
+		lang1 != "en_US" && lang2 == "en_US" {
+		return SOUNDEX_NO_ENGLISH_COMPARE
+	}
+
+	soundex1 := strings.Split(Calculate(word1, 8), "")
+	soundex2 := strings.Split(Calculate(word2, 8), "")
+
+	if strings.Join(soundex1[1:], "") == strings.Join(soundex2[1:], "") {
+		return SOUNDEX_STRINGS_MATCH
+	}
+
+	return SOUNDEX_STRING_NOMATCH
+
+}
