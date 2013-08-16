@@ -1,3 +1,13 @@
+/*
+  Charmap package implements character map and functions
+
+  This package implements character range slices for Indian languages
+  and English. It also implements soundex codes for Indian languages
+  and English. Soundex codes are accessed using function SoundexCode.
+
+  It also  implements language detection and char compare function.
+
+*/
 package charmap
 
 import (
@@ -16,6 +26,9 @@ type sequenceIndex interface {
 // Private map to hold all sequences
 type charMap map[string]sequenceIndex
 
+/*
+  Custom Error structure for missing or unknown character
+*/
 type UnknownCharError struct {
 	char    interface{}
 	lang    string
@@ -131,6 +144,11 @@ func (r runeSequence) index(char interface{}) int {
 	return -1
 }
 
+/*
+  Language of returns the language of given character. Function
+  accepts string or rune as argument. If language can not be detected
+  function returns string "unknown"
+*/
 func LanguageOf(char interface{}) string {
 	for lang, langRange := range langMap {
 		if langRange.index(char) != -1 {
@@ -141,6 +159,19 @@ func LanguageOf(char interface{}) string {
 	return "unknown"
 }
 
+/*
+  CharCompare compares the given character or string literal to see if
+  they are similar from different languages.
+
+  Function accepts string or rune this is because IPA and ISO15919
+  series are multibyte sequence and can not be represented as single
+  rune.
+
+  Another characteristic of Indian language is all languages have
+  similar character set this is the basis of this function if both
+  character are in 2 Indian languages but at similar Unicode code
+  point function returns true otherwise returns false.
+*/
 func CharCompare(char1, char2 interface{}) bool {
 
 	if char1 == char2 {
@@ -157,6 +188,17 @@ func CharCompare(char1, char2 interface{}) bool {
 	return false
 }
 
+/*
+  SoundexCode returns the soundex code for given character function
+  returns rune code and UnknownCharError.
+
+  For the sake of allowing IPA and ISO15919 series this function also
+  accepts either rune or string.
+
+  If code for char is not found "0" is returned which will be ignored
+  by Soundex calculation algorithm and error initiated using composite
+  literal which can be used to print error message.
+*/
 func SoundexCode(char interface{}) (rune, error) {
 	var lang string
 
