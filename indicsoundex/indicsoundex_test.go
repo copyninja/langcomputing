@@ -8,7 +8,25 @@ func TestCalculate(t *testing.T) {
 
 	for index, value := range inArray {
 		if x, output := Calculate(value, 8), outArray[index]; x != output {
-			t.Errorf("Calculate(%s) = %s was expecting %s", value, x, output)
+			t.Errorf("Calculate(%s) = %s was expecting %s", value,
+				x, output)
+		}
+	}
+}
+
+func TestCompare(t *testing.T) {
+	inArray := []string{"vasudev", "ವಾಸುದೇವ", "वासुदॆव", "vasudev",
+		"vasudev"}
+	outArray := []string{"kamath", "വാസുദേവ", "వాసుదేవ", "vaasudev",
+		"vasudev"}
+	resultArray := []int{SOUNDEX_STRING_NOMATCH, SOUNDEX_STRINGS_MATCH,
+		SOUNDEX_STRINGS_MATCH, SOUNDEX_STRINGS_MATCH,
+		SOUNDEX_SAME_STRING}
+
+	for index, value := range inArray {
+		if x := Compare(value, outArray[index]); x != resultArray[index] {
+			t.Errorf("Compare(%s, %s) = %d was expecting %d", value,
+				outArray[index], x, resultArray[index])
 		}
 	}
 }
