@@ -8,9 +8,9 @@ import (
 
 const (
 	SOUNDEX_NO_ENGLISH_COMPARE = -1
-	SOUNDEX_SAME_STRING = 0
-	SOUNDEX_STRINGS_MATCH = iota
-	SOUNDEX_STRING_NOMATCH
+	SOUNDEX_SAME_STRING        = 0
+	SOUNDEX_STRINGS_MATCH      = 1
+	SOUNDEX_STRING_NOMATCH     = 2
 )
 
 func soundex(word string, length int) (string, string) {
